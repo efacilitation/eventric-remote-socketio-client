@@ -10,15 +10,14 @@ class SocketIORemoteService
       if response.rpcId not of @_callbacks
         throw new Error "No callback registered for id #{response.rpcId}"
 
-      @_callbacks[response.rpcId] response.data
+      @_callbacks[response.rpcId] response.err, response.data
       delete @_callbacks[response.rpcId]
 
 
   rpc: (payload, callback) ->
     rpcId = @_generateUid()
     payload.rpcId = rpcId
-    @_callbacks[rpcId] = (data) ->
-      callback null, data
+    @_callbacks[rpcId] = callback
 
     @_io_client.emit 'RPC_Request', payload
 
