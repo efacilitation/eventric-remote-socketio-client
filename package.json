@@ -1,3 +1,18 @@
 {
-  "name": "eventric-remote-socketio"
+  "name": "eventric-remote-socketio",
+  "description": "eventric SocketIO RemoteService Adapter",
+  "url": "http://eventric.org",
+  "keywords": [
+    "eventric",
+    "eventric-remote"
+  ],
+  "author": "eFa Team <team@efa-gmbh.com>",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git://sixsteps.com/efa/eventric-remote-socketio.git"
+  },
+  "dependencies": {
+    "mongodb": "*"
+  }
 }

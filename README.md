@@ -1,0 +1,1 @@
+## eventric SocketIO RemoteService Adapter
