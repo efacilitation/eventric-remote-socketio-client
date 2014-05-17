@@ -5,7 +5,7 @@ sinon  = require 'sinon'
 describe 'SocketIORemoteService', ->
   describe '#rpc', ->
     it 'should emit the given payload as rpc request over socket.io-client', ->
-      socketIORemoteService = require './socketio_remote_service'
+      socketIORemoteService = require './socketio_remote_service_client'
       sandbox = sinon.sandbox.create()
 
       socketIOClientStub = sandbox.stub()

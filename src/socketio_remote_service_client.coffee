@@ -1,4 +1,4 @@
-class SocketIORemoteService
+class SocketIORemoteServiceClient
 
   initialize: (@_io_client) ->
     @_callbacks = {}
@@ -30,4 +30,4 @@ class SocketIORemoteService
     S4() + S4() + delim + S4() + delim + S4() + delim + S4() + delim + S4() + S4() + S4()
 
 
-module.exports = new SocketIORemoteService
+module.exports = new SocketIORemoteServiceClient

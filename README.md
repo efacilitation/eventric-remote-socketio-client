@@ -1,1 +1,1 @@
-## eventric SocketIO RemoteService Adapter [![Build Status](https://travis-ci.org/efacilitation/eventric-remote-socketio.svg?branch=master)](https://travis-ci.org/efacilitation/eventric-remote-socketio)
+## eventric SocketIO RemoteService Client Adapter [![Build Status](https://travis-ci.org/efacilitation/eventric-remote-socketio-client.svg?branch=master)](https://travis-ci.org/efacilitation/eventric-remote-socketio-client)
