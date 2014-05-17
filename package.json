@@ -7,18 +7,27 @@
     "eventric-remote"
   ],
   "author": "eFa Team <team@efa-gmbh.com>",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "repository": {
     "type": "git",
-    "url": "git://sixsteps.com/efa/eventric-remote-socketio.git"
+    "url": "https://github.com/efacilitation/eventric-remote-socketio.git"
   },
   "scripts": {
-    "prepublish": "node_modules/.bin/coffee -c socketio_remote_service.coffee"
+    "test": "node_modules/.bin/coffeegulp spec",
+    "prepublish": "node_modules/.bin/coffee -o dist -c src/socketio_remote_service.coffee"
   },
   "dependencies": {
     "socket.io": "*"
   },
   "devDependencies": {
-    "coffee-script": "*"
+    "coffee-script": "*",
+    "chai": "*",
+    "gulp": "*",
+    "gulp-grep-stream": "*",
+    "gulp-util": "*",
+    "gulp-mocha": "*",
+    "gulp-watch": "*",
+    "coffeegulp": "*",
+    "sinon": "*"
   }
 }

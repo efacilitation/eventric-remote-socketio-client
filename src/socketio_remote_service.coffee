@@ -1,6 +1,6 @@
 class SocketIORemoteService
 
-  constructor: (@_io_client) ->
+  initialize: (@_io_client) ->
     @_callbacks = {}
 
     @_io_client.on 'RPC_Response', (response) =>
@@ -30,4 +30,4 @@ class SocketIORemoteService
     S4() + S4() + delim + S4() + delim + S4() + delim + S4() + delim + S4() + S4() + S4()
 
 
-module.exports = SocketIORemoteService
+module.exports = new SocketIORemoteService
