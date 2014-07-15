@@ -2,24 +2,28 @@ class SocketIORemoteServiceClient
 
   initialize: (@_io_client) ->
     @_callbacks = {}
-
     @_io_client.on 'RPC_Response', (response) =>
-      if not response.rpcId
-        throw new Error 'Missing rpcId in RPC Response'
-
-      if response.rpcId not of @_callbacks
-        throw new Error "No callback registered for id #{response.rpcId}"
-
-      @_callbacks[response.rpcId] response.err, response.data
-      delete @_callbacks[response.rpcId]
+      setTimeout =>
+        @_handleRpcResponse response
+      , 0
 
 
   rpc: (payload, callback) ->
     rpcId = @_generateUid()
+    console.log rpcId
     payload.rpcId = rpcId
     @_callbacks[rpcId] = callback
-
     @_io_client.emit 'RPC_Request', payload
+    rpcId
+
+
+  _handleRpcResponse: (response) ->
+    if not response.rpcId
+      throw new Error 'Missing rpcId in RPC Response'
+    if response.rpcId not of @_callbacks
+      throw new Error "No callback registered for id #{response.rpcId}"
+    @_callbacks[response.rpcId] response.err, response.data
+    delete @_callbacks[response.rpcId]
 
 
   _generateUid: (separator) ->
