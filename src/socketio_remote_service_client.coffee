@@ -8,7 +8,7 @@ class SocketIORemoteServiceClient
       , 0
 
 
-  rpc: (payload, callback) ->
+  rpc: (payload, callback = ->) ->
     rpcId = @_generateUid()
     payload.rpcId = rpcId
     @_callbacks[rpcId] = callback
