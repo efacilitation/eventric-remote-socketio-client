@@ -10,11 +10,9 @@ class SocketIORemoteServiceClient
 
   rpc: (payload, callback) ->
     rpcId = @_generateUid()
-    console.log rpcId
     payload.rpcId = rpcId
     @_callbacks[rpcId] = callback
     @_io_client.emit 'RPC_Request', payload
-    rpcId
 
 
   _handleRpcResponse: (response) ->

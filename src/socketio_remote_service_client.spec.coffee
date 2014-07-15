@@ -12,7 +12,6 @@ describe 'SocketIORemoteService', ->
     socketIOClientStub = sandbox.stub()
     socketIOClientStub.on = sandbox.stub()
     socketIOClientStub.emit = sandbox.stub()
-
     socketIORemoteService = require './socketio_remote_service_client'
 
 
