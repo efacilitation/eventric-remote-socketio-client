@@ -1,9 +1,20 @@
 class SocketIORemoteServiceClient
 
-  initialize: (@_io_client) ->
-    @_callbacks = {}
+  initialize: ([options]..., callback=->) ->
+    options ?= {}
 
-    @_io_client.on 'RPC_Response', (response) =>
+    @_callbacks = {}
+    if options.ioClientInstance
+      @_io_socket = options.ioClientSocket
+      @_initializeRPCResponseListener callback
+    else
+      @_io_socket = require('socket.io-client')('http://localhost:3000')
+      @_io_socket.on 'connect', =>
+        @_initializeRPCResponseListener callback
+
+
+  _initializeRPCResponseListener: (callback) ->
+    @_io_socket.on 'RPC_Response', (response) =>
       if not response.rpcId
         throw new Error 'Missing rpcId in RPC Response'
 
@@ -13,13 +24,15 @@ class SocketIORemoteServiceClient
       @_callbacks[response.rpcId] response.err, response.data
       delete @_callbacks[response.rpcId]
 
+    callback()
+
 
   rpc: (payload, callback) ->
     rpcId = @_generateUid()
     payload.rpcId = rpcId
     @_callbacks[rpcId] = callback
 
-    @_io_client.emit 'RPC_Request', payload
+    @_io_socket.emit 'RPC_Request', payload
 
 
   _generateUid: (separator) ->
