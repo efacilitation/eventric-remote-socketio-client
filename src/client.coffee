@@ -4,6 +4,7 @@ class SocketIORemoteServiceClient
     options ?= {}
 
     @_callbacks = {}
+
     if options.ioClientInstance
       @_io_socket = options.ioClientSocket
       @_initializeRPCResponseListener callback
@@ -27,12 +28,20 @@ class SocketIORemoteServiceClient
     callback()
 
 
-  rpc: (payload, callback) ->
+  rpc: (payload, callback = ->) ->
     rpcId = @_generateUid()
     payload.rpcId = rpcId
     @_callbacks[rpcId] = callback
+    @_io_client.emit 'RPC_Request', payload
 
-    @_io_socket.emit 'RPC_Request', payload
+
+  _handleRpcResponse: (response) ->
+    if not response.rpcId
+      throw new Error 'Missing rpcId in RPC Response'
+    if response.rpcId not of @_callbacks
+      throw new Error "No callback registered for id #{response.rpcId}"
+    @_callbacks[response.rpcId] response.err, response.data
+    delete @_callbacks[response.rpcId]
 
 
   _generateUid: (separator) ->

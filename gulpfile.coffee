@@ -10,9 +10,11 @@ gulp.on 'task_err', (e) ->
     gutil.log e
     process.exit 1
 
+
 gulp.task 'spec', ->
   gulp.src('src/*.coffee')
     .pipe(mocha())
+
 
 gulp.task 'default', ->
   gulp.src("src/*.coffee",
