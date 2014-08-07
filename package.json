@@ -15,7 +15,7 @@
   },
   "main": "dist/client.js",
   "scripts": {
-    "test": "node_modules/.bin/coffeegulp spec",
+    "test": "node_modules/.bin/gulp spec",
     "prepublish": "node_modules/.bin/coffee -o dist -c src/client.coffee"
   },
   "main": "dist/socketio_remote_service_client.js",
