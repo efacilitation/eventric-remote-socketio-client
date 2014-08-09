@@ -8,7 +8,7 @@
     "socketio"
   ],
   "author": "eFa Team <team@efa-gmbh.com>",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "repository": {
     "type": "git",
     "url": "https://github.com/efacilitation/eventric-remote-socketio-client.git"
@@ -18,7 +18,6 @@
     "test": "node_modules/.bin/gulp spec",
     "prepublish": "node_modules/.bin/coffee -o dist -c src/client.coffee"
   },
-  "main": "dist/socketio_remote_service_client.js",
   "dependencies": {
     "socket.io-client": "*"
   },
