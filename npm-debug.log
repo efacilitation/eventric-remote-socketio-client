@@ -1,0 +1,142 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/home/jb/.nvm/v0.10.28/bin/node',
+1 verbose cli   '/home/jb/.nvm/v0.10.28/bin/npm',
+1 verbose cli   'publish' ]
+2 info using npm@1.4.9
+3 info using node@v0.10.28
+4 verbose publish [ '.' ]
+5 verbose cache add [ '.', null ]
+6 verbose cache add name=undefined spec="." args=[".",null]
+7 verbose parsed url { protocol: null,
+7 verbose parsed url   slashes: null,
+7 verbose parsed url   auth: null,
+7 verbose parsed url   host: null,
+7 verbose parsed url   port: null,
+7 verbose parsed url   hostname: null,
+7 verbose parsed url   hash: null,
+7 verbose parsed url   search: null,
+7 verbose parsed url   query: null,
+7 verbose parsed url   pathname: '.',
+7 verbose parsed url   path: '.',
+7 verbose parsed url   href: '.' }
+8 silly lockFile 3a52ce78- .
+9 verbose lock . /home/jb/.npm/3a52ce78-.lock
+10 verbose tar pack [ '/home/jb/tmp/npm-30850-M4NbRcdX/1407632551737-0.2593597013037652/tmp.tgz',
+10 verbose tar pack   '.' ]
+11 verbose tarball /home/jb/tmp/npm-30850-M4NbRcdX/1407632551737-0.2593597013037652/tmp.tgz
+12 verbose folder .
+13 info prepublish eventric-remote-socketio-client@0.0.12
+14 verbose unsafe-perm in lifecycle true
+15 silly lockFile 1f1177db-tar tar://.
+16 verbose lock tar://. /home/jb/.npm/1f1177db-tar.lock
+17 silly lockFile ad047f92-51737-0-2593597013037652-tmp-tgz tar:///home/jb/tmp/npm-30850-M4NbRcdX/1407632551737-0.2593597013037652/tmp.tgz
+18 verbose lock tar:///home/jb/tmp/npm-30850-M4NbRcdX/1407632551737-0.2593597013037652/tmp.tgz /home/jb/.npm/ad047f92-51737-0-2593597013037652-tmp-tgz.lock
+19 silly lockFile 1f1177db-tar tar://.
+20 silly lockFile 1f1177db-tar tar://.
+21 silly lockFile ad047f92-51737-0-2593597013037652-tmp-tgz tar:///home/jb/tmp/npm-30850-M4NbRcdX/1407632551737-0.2593597013037652/tmp.tgz
+22 silly lockFile ad047f92-51737-0-2593597013037652-tmp-tgz tar:///home/jb/tmp/npm-30850-M4NbRcdX/1407632551737-0.2593597013037652/tmp.tgz
+23 verbose tar unpack /home/jb/tmp/npm-30850-M4NbRcdX/1407632551737-0.2593597013037652/tmp.tgz
+24 silly lockFile 42bade21-e-socketio-client-0-0-12-package tar:///home/jb/.npm/eventric-remote-socketio-client/0.0.12/package
+25 verbose lock tar:///home/jb/.npm/eventric-remote-socketio-client/0.0.12/package /home/jb/.npm/42bade21-e-socketio-client-0-0-12-package.lock
+26 silly lockFile ad047f92-51737-0-2593597013037652-tmp-tgz tar:///home/jb/tmp/npm-30850-M4NbRcdX/1407632551737-0.2593597013037652/tmp.tgz
+27 verbose lock tar:///home/jb/tmp/npm-30850-M4NbRcdX/1407632551737-0.2593597013037652/tmp.tgz /home/jb/.npm/ad047f92-51737-0-2593597013037652-tmp-tgz.lock
+28 silly gunzTarPerm modes [ '755', '644' ]
+29 silly gunzTarPerm extractEntry package.json
+30 silly gunzTarPerm modified mode [ 'package.json', 436, 420 ]
+31 silly gunzTarPerm extractEntry .npmignore
+32 silly gunzTarPerm modified mode [ '.npmignore', 436, 420 ]
+33 silly gunzTarPerm extractEntry README.md
+34 silly gunzTarPerm modified mode [ 'README.md', 436, 420 ]
+35 silly gunzTarPerm extractEntry gulpfile.js
+36 silly gunzTarPerm modified mode [ 'gulpfile.js', 436, 420 ]
+37 silly gunzTarPerm extractEntry .travis.yml
+38 silly gunzTarPerm modified mode [ '.travis.yml', 436, 420 ]
+39 silly gunzTarPerm extractEntry bower.json
+40 silly gunzTarPerm modified mode [ 'bower.json', 436, 420 ]
+41 silly gunzTarPerm extractEntry dist/client.js
+42 silly gunzTarPerm modified mode [ 'dist/client.js', 436, 420 ]
+43 silly gunzTarPerm extractEntry gulpfile.coffee
+44 silly gunzTarPerm modified mode [ 'gulpfile.coffee', 436, 420 ]
+45 silly gunzTarPerm extractEntry src/client.coffee
+46 silly gunzTarPerm modified mode [ 'src/client.coffee', 436, 420 ]
+47 silly gunzTarPerm extractEntry src/client.spec.coffee
+48 silly gunzTarPerm modified mode [ 'src/client.spec.coffee', 436, 420 ]
+49 silly lockFile 42bade21-e-socketio-client-0-0-12-package tar:///home/jb/.npm/eventric-remote-socketio-client/0.0.12/package
+50 silly lockFile 42bade21-e-socketio-client-0-0-12-package tar:///home/jb/.npm/eventric-remote-socketio-client/0.0.12/package
+51 silly lockFile ad047f92-51737-0-2593597013037652-tmp-tgz tar:///home/jb/tmp/npm-30850-M4NbRcdX/1407632551737-0.2593597013037652/tmp.tgz
+52 silly lockFile ad047f92-51737-0-2593597013037652-tmp-tgz tar:///home/jb/tmp/npm-30850-M4NbRcdX/1407632551737-0.2593597013037652/tmp.tgz
+53 silly lockFile 3a52ce78- .
+54 silly lockFile 3a52ce78- .
+55 silly publish { name: 'eventric-remote-socketio-client',
+55 silly publish   description: 'eventric SocketIO RemoteService Client Adapter',
+55 silly publish   url: 'http://eventric.org',
+55 silly publish   keywords: [ 'eventric', 'eventric-remote-client', 'socketio' ],
+55 silly publish   author: { name: 'eFa Team', email: 'team@efa-gmbh.com' },
+55 silly publish   version: '0.0.12',
+55 silly publish   repository:
+55 silly publish    { type: 'git',
+55 silly publish      url: 'https://github.com/efacilitation/eventric-remote-socketio-client.git' },
+55 silly publish   main: 'dist/client.js',
+55 silly publish   scripts:
+55 silly publish    { test: 'gulp spec',
+55 silly publish      prepublish: 'coffee -o dist -c src/client.coffee' },
+55 silly publish   dependencies: { 'socket.io-client': '*' },
+55 silly publish   devDependencies:
+55 silly publish    { 'coffee-script': '*',
+55 silly publish      chai: '*',
+55 silly publish      gulp: '*',
+55 silly publish      'gulp-grep-stream': '*',
+55 silly publish      'gulp-util': '*',
+55 silly publish      'gulp-mocha': '*',
+55 silly publish      'gulp-watch': '*',
+55 silly publish      sinon: '*' },
+55 silly publish   readme: '## eventric SocketIO RemoteService Client Adapter [![Build Status](https://travis-ci.org/efacilitation/eventric-remote-socketio-client.svg?branch=master)](https://travis-ci.org/efacilitation/eventric-remote-socketio-client)\n',
+55 silly publish   readmeFilename: 'README.md',
+55 silly publish   bugs: { url: 'https://github.com/efacilitation/eventric-remote-socketio-client/issues' },
+55 silly publish   homepage: 'https://github.com/efacilitation/eventric-remote-socketio-client',
+55 silly publish   _id: 'eventric-remote-socketio-client@0.0.12',
+55 silly publish   _shasum: '0049d32a886a2e255a696c7fff471fdfdc32b350',
+55 silly publish   _from: '.' }
+56 verbose url raw eventric-remote-socketio-client
+57 verbose url resolving [ 'https://registry.npmjs.org/',
+57 verbose url resolving   './eventric-remote-socketio-client' ]
+58 verbose url resolved https://registry.npmjs.org/eventric-remote-socketio-client
+59 info trying registry request attempt 1 at 03:02:31
+60 http PUT https://registry.npmjs.org/eventric-remote-socketio-client
+61 http 403 https://registry.npmjs.org/eventric-remote-socketio-client
+62 verbose headers { date: 'Sun, 10 Aug 2014 01:02:32 GMT',
+62 verbose headers   server: 'CouchDB/1.5.0 (Erlang OTP/R14B04)',
+62 verbose headers   'content-type': 'application/json',
+62 verbose headers   'cache-control': 'max-age=60',
+62 verbose headers   'content-length': '3229',
+62 verbose headers   'accept-ranges': 'bytes',
+62 verbose headers   via: '1.1 varnish',
+62 verbose headers   'x-served-by': 'cache-fra1231-FRA',
+62 verbose headers   'x-cache': 'MISS',
+62 verbose headers   'x-cache-hits': '0',
+62 verbose headers   'x-timer': 'S1407632551.863473,VS0,VE717',
+62 verbose headers   'keep-alive': 'timeout=10, max=50',
+62 verbose headers   connection: 'Keep-Alive' }
+63 error publish Failed PUT 403
+64 error Error: forbidden cannot modify pre-existing version: 0.0.12
+64 error old={"name":"eventric-remote-socketio-client","description":"eventric SocketIO RemoteService Client Adapter","url":"http://eventric.org","keywords":["eventric","eventric-remote-client","socketio"],"author":{"name":"eFa Team","email":"team@efa-gmbh.com"},"version":"0.0.12","repository":{"type":"git","url":"https://github.com/efacilitation/eventric-remote-socketio-client.git"},"main":"dist/client.js","scripts":{"test":"gulp spec","prepublish":"coffee -o dist -c src/client.coffee"},"dependencies":{"socket.io-client":"*"},"devDependencies":{"coffee-script":"*","chai":"*","gulp":"*","gulp-grep-stream":"*","gulp-util":"*","gulp-mocha":"*","gulp-watch":"*","sinon":"*"},"bugs":{"url":"https://github.com/efacilitation/eventric-remote-socketio-client/issues"},"homepage":"https://github.com/efacilitation/eventric-remote-socketio-client","_id":"eventric-remote-socketio-client@0.0.12","_shasum":"e625abda84849fc7251fa7333b0a4b8ae75b2e27","_from":".","_npmVersion":"1.4.9","_npmUser":{"name":"efacilitation","email":"team@efa-gmbh.com"},"maintainers":[{"name":"efacilitation","email":"team@efa-gmbh.com"}],"dist":{"shasum":"e625abda84849fc7251fa7333b0a4b8ae75b2e27","tarball":"http://registry.npmjs.org/eventric-remote-socketio-client/-/eventric-remote-socketio-client-0.0.12.tgz"}}
+64 error new={"name":"eventric-remote-socketio-client","description":"eventric SocketIO RemoteService Client Adapter","url":"http://eventric.org","keywords":["eventric","eventric-remote-client","socketio"],"author":{"name":"eFa Team","email":"team@efa-gmbh.com"},"version":"0.0.12","repository":{"type":"git","url":"https://github.com/efacilitation/eventric-remote-socketio-client.git"},"main":"dist/client.js","scripts":{"test":"gulp spec","prepublish":"coffee -o dist -c src/client.coffee"},"dependencies":{"socket.io-client":"*"},"devDependencies":{"coffee-script":"*","chai":"*","gulp":"*","gulp-grep-stream":"*","gulp-util":"*","gulp-mocha":"*","gulp-watch":"*","sinon":"*"},"readme":"## eventric SocketIO RemoteService Client Adapter [![Build Status](https://travis-ci.org/efacilitation/eventric-remote-socketio-client.svg?branch=master)](https://travis-ci.org/efacilitation/eventric-remote-socketio-client)\u000a","readmeFilename":"README.md","bugs":{"url":"https://github.com/efacilitation/eventric-remote-socketio-client/issues"},"homepage":"https://github.com/efacilitation/eventric-remote-socketio-client","_id":"eventric-remote-socketio-client@0.0.12","_shasum":"0049d32a886a2e255a696c7fff471fdfdc32b350","_from":".","_npmVersion":"1.4.9","_npmUser":{"name":"efacilitation","email":"team@efa-gmbh.com"},"maintainers":[{"name":"efacilitation","email":"team@efa-gmbh.com"}],"dist":{"shasum":"0049d32a886a2e255a696c7fff471fdfdc32b350","tarball":"http://registry.npmjs.org/eventric-remote-socketio-client/-/eventric-remote-socketio-client-0.0.12.tgz"}}: eventric-remote-socketio-client
+64 error     at RegClient.<anonymous> (/home/jb/.nvm/v0.10.28/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:273:14)
+64 error     at Request._callback (/home/jb/.nvm/v0.10.28/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:211:65)
+64 error     at Request.self.callback (/home/jb/.nvm/v0.10.28/lib/node_modules/npm/node_modules/request/request.js:123:22)
+64 error     at Request.EventEmitter.emit (events.js:98:17)
+64 error     at Request.<anonymous> (/home/jb/.nvm/v0.10.28/lib/node_modules/npm/node_modules/request/request.js:893:14)
+64 error     at Request.EventEmitter.emit (events.js:117:20)
+64 error     at IncomingMessage.<anonymous> (/home/jb/.nvm/v0.10.28/lib/node_modules/npm/node_modules/request/request.js:844:12)
+64 error     at IncomingMessage.EventEmitter.emit (events.js:117:20)
+64 error     at _stream_readable.js:919:16
+64 error     at process._tickCallback (node.js:419:13)
+65 error If you need help, you may report this *entire* log,
+65 error including the npm and node versions, at:
+65 error     <http://github.com/npm/npm/issues>
+66 error System Linux 3.13.0-30-generic
+67 error command "/home/jb/.nvm/v0.10.28/bin/node" "/home/jb/.nvm/v0.10.28/bin/npm" "publish"
+68 error cwd /home/jb/Code/efa/eventric-remote-socketio-client
+69 error node -v v0.10.28
+70 error npm -v 1.4.9
+71 verbose exit [ 1, true ]
