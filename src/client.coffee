@@ -6,7 +6,7 @@ class SocketIORemoteServiceClient
     @_callbacks = {}
 
     if options.ioClientInstance
-      @_io_socket = options.ioClientSocket
+      @_io_socket = options.ioClientInstance
       @_initializeRPCResponseListener callback
     else
       @_io_socket = require('socket.io-client')('http://localhost:3000')
@@ -32,7 +32,7 @@ class SocketIORemoteServiceClient
     rpcId = @_generateUid()
     payload.rpcId = rpcId
     @_callbacks[rpcId] = callback
-    @_io_client.emit 'RPC_Request', payload
+    @_io_socket.emit 'RPC_Request', payload
 
 
   _handleRpcResponse: (response) ->
