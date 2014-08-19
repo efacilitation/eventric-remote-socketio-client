@@ -1,8 +1,6 @@
 class SocketIORemoteServiceClient
 
-  initialize: ([options]..., callback=->) ->
-    options ?= {}
-
+  initialize: (options = {}, callback = ->) ->
     @_callbacks = {}
 
     if options.ioClientInstance
@@ -16,16 +14,21 @@ class SocketIORemoteServiceClient
 
   _initializeRPCResponseListener: (callback) ->
     @_io_socket.on 'RPC_Response', (response) =>
-      if not response.rpcId
-        throw new Error 'Missing rpcId in RPC Response'
-
-      if response.rpcId not of @_callbacks
-        throw new Error "No callback registered for id #{response.rpcId}"
-
-      @_callbacks[response.rpcId] response.err, response.data
-      delete @_callbacks[response.rpcId]
-
+      setTimeout =>
+        @_handleRpcResponse response
+      , 0
     callback()
+
+
+  _handleRPCResponse: (response) ->
+    if not response.rpcId
+      throw new Error 'Missing rpcId in RPC Response'
+
+    if response.rpcId not of @_callbacks
+      throw new Error "No callback registered for id #{response.rpcId}"
+
+    @_callbacks[response.rpcId] response.err, response.data
+    delete @_callbacks[response.rpcId]
 
 
   rpc: (payload, callback = ->) ->
@@ -50,6 +53,11 @@ class SocketIORemoteServiceClient
       (((1 + Math.random()) * 0x10000) | 0).toString(16).substring 1
     delim = separator or "-"
     S4() + S4() + delim + S4() + delim + S4() + delim + S4() + delim + S4() + S4() + S4()
+
+
+  subscribe: (channel, eventName, handlerFn) ->
+    @_io_socket.join channel
+    @_io_socket.on eventName, handlerFn
 
 
 module.exports = new SocketIORemoteServiceClient
