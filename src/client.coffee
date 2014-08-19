@@ -59,7 +59,7 @@ class SocketIORemoteServiceClient
   subscribe: (eventName, handlerFn) ->
     @_numberOfHandlers[eventName] ?= 0
     @_numberOfHandlers[eventName] += 1
-    @_io_socket.join eventName
+    @_io_socket.emit 'JoinRoom', eventName
     @_io_socket.on eventName, handlerFn
 
 
@@ -68,7 +68,7 @@ class SocketIORemoteServiceClient
     @_numberOfHandlers[eventName] -= 1
     @_io_socket.removeListener eventName, handlerFn
     if @_numberOfHandlers[eventName] <= 0
-      @_io_socket.leave eventName
+      @_io_socket.emit 'LeaveRoom', eventName
 
 
 module.exports = new SocketIORemoteServiceClient

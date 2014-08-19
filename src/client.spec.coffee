@@ -10,8 +10,6 @@ describe 'SocketIORemoteService', ->
   beforeEach ->
     sandbox = sinon.sandbox.create()
     socketIOClientStub = sandbox.stub()
-    socketIOClientStub.join = sandbox.stub()
-    socketIOClientStub.leave = sandbox.stub()
     socketIOClientStub.on = sandbox.stub()
     socketIOClientStub.emit = sandbox.stub()
     socketIOClientStub.removeListener = sandbox.stub()
@@ -68,7 +66,7 @@ describe 'SocketIORemoteService', ->
 
 
     it 'should join the given channel', ->
-      expect(socketIOClientStub.join.calledWith 'context/event/id').to.be.true
+      expect(socketIOClientStub.emit.calledWith 'JoinRoom', 'context/event/id').to.be.true
 
 
     it 'should subscribe to the given event', ->
@@ -93,7 +91,7 @@ describe 'SocketIORemoteService', ->
       it 'should leave the given channel', ->
         socketIORemoteClient.subscribe 'context/event/id', handler
         socketIORemoteClient.unsubscribe 'context/event/id', handler
-        expect(socketIOClientStub.leave.calledWith 'context/event/id').to.be.true
+        expect(socketIOClientStub.emit.calledWith 'LeaveRoom', 'context/event/id').to.be.true
 
 
     describe 'given there are still handlers for this event', ->
@@ -102,4 +100,4 @@ describe 'SocketIORemoteService', ->
         socketIORemoteClient.subscribe 'context/event/id', handler
         socketIORemoteClient.subscribe 'context/event/id', anotherHandler
         socketIORemoteClient.unsubscribe 'context/event/id', handler
-        expect(socketIOClientStub.leave.notCalled).to.be.true
+        expect(socketIOClientStub.emit.calledWith 'LeaveRoom').not.to.be.true
