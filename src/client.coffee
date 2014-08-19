@@ -1,6 +1,7 @@
 class SocketIORemoteServiceClient
 
   initialize: (options = {}, callback = ->) ->
+    @_numberOfHandlers = {}
     @_callbacks = {}
 
     if options.ioClientInstance
@@ -55,9 +56,19 @@ class SocketIORemoteServiceClient
     S4() + S4() + delim + S4() + delim + S4() + delim + S4() + delim + S4() + S4() + S4()
 
 
-  subscribe: (channel, eventName, handlerFn) ->
-    @_io_socket.join channel
+  subscribe: (eventName, handlerFn) ->
+    @_numberOfHandlers[eventName] ?= 0
+    @_numberOfHandlers[eventName] += 1
+    @_io_socket.join eventName
     @_io_socket.on eventName, handlerFn
+
+
+  unsubscribe: (eventName, handlerFn) ->
+    @_numberOfHandlers[eventName] ?= 0
+    @_numberOfHandlers[eventName] -= 1
+    @_io_socket.removeListener eventName, handlerFn
+    if @_numberOfHandlers[eventName] <= 0
+      @_io_socket.leave eventName
 
 
 module.exports = new SocketIORemoteServiceClient

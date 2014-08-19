@@ -11,8 +11,10 @@ describe 'SocketIORemoteService', ->
     sandbox = sinon.sandbox.create()
     socketIOClientStub = sandbox.stub()
     socketIOClientStub.join = sandbox.stub()
+    socketIOClientStub.leave = sandbox.stub()
     socketIOClientStub.on = sandbox.stub()
     socketIOClientStub.emit = sandbox.stub()
+    socketIOClientStub.removeListener = sandbox.stub()
     socketIORemoteClient = require './client'
 
 
@@ -62,13 +64,42 @@ describe 'SocketIORemoteService', ->
     beforeEach ->
       handler = ->
       socketIORemoteClient.initialize ioClientInstance: socketIOClientStub
-      socketIORemoteClient.subscribe 'channel/event/id', 'event', handler
+      socketIORemoteClient.subscribe 'context/event/id', handler
 
 
     it 'should join the given channel', ->
-      expect(socketIOClientStub.join.calledWith 'channel/event/id').to.be.true
+      expect(socketIOClientStub.join.calledWith 'context/event/id').to.be.true
 
 
     it 'should subscribe to the given event', ->
-      expect(socketIOClientStub.on.calledWith 'event', handler).to.be.true
+      expect(socketIOClientStub.on.calledWith 'context/event/id', handler).to.be.true
 
+
+  describe '#unsubscribe', ->
+    handler = null
+
+    beforeEach ->
+      handler = ->
+      socketIORemoteClient.initialize ioClientInstance: socketIOClientStub
+
+
+    it 'should unsubscribe to the given event', ->
+      socketIORemoteClient.subscribe 'context/event/id', handler
+      socketIORemoteClient.unsubscribe 'context/event/id', handler
+      expect(socketIOClientStub.removeListener.calledWith 'context/event/id', handler).to.be.true
+
+
+    describe 'given there are no more handlers for this event', ->
+      it 'should leave the given channel', ->
+        socketIORemoteClient.subscribe 'context/event/id', handler
+        socketIORemoteClient.unsubscribe 'context/event/id', handler
+        expect(socketIOClientStub.leave.calledWith 'context/event/id').to.be.true
+
+
+    describe 'given there are still handlers for this event', ->
+      it 'should not leave the given channel', ->
+        anotherHandler = ->
+        socketIORemoteClient.subscribe 'context/event/id', handler
+        socketIORemoteClient.subscribe 'context/event/id', anotherHandler
+        socketIORemoteClient.unsubscribe 'context/event/id', handler
+        expect(socketIOClientStub.leave.notCalled).to.be.true
