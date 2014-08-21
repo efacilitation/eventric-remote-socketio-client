@@ -62,15 +62,44 @@ describe 'SocketIORemoteService', ->
     beforeEach ->
       handler = ->
       socketIORemoteClient.initialize ioClientInstance: socketIOClientStub
-      socketIORemoteClient.subscribe 'context/event/id', handler
+
+    describe 'given only a context name', ->
+      beforeEach ->
+        socketIORemoteClient.subscribe 'context', handler
 
 
-    it 'should join the given channel', ->
-      expect(socketIOClientStub.emit.calledWith 'JoinRoom', 'context/event/id').to.be.true
+      it 'should join the correct channel', ->
+        expect(socketIOClientStub.emit.calledWith 'JoinRoom', 'context').to.be.true
 
 
-    it 'should subscribe to the given event', ->
-      expect(socketIOClientStub.on.calledWith 'context/event/id', handler).to.be.true
+      it 'should subscribe to the correct event', ->
+        expect(socketIOClientStub.on.calledWith 'context', handler).to.be.true
+
+
+    describe 'given a context name and event name', ->
+      beforeEach ->
+        socketIORemoteClient.subscribe 'context', 'EventName', handler
+
+
+      it 'should join the correct channel', ->
+        expect(socketIOClientStub.emit.calledWith 'JoinRoom', 'context/EventName').to.be.true
+
+
+      it 'should subscribe to the correct event', ->
+        expect(socketIOClientStub.on.calledWith 'context/EventName', handler).to.be.true
+
+
+    describe 'given a context name, event name and aggregate id', ->
+      beforeEach ->
+        socketIORemoteClient.subscribe 'context', 'EventName', '12345', handler
+
+
+      it 'should join the correct channel', ->
+        expect(socketIOClientStub.emit.calledWith 'JoinRoom', 'context/EventName/12345').to.be.true
+
+
+      it 'should subscribe to the correct event', ->
+        expect(socketIOClientStub.on.calledWith 'context/EventName/12345', handler).to.be.true
 
 
   describe '#unsubscribe', ->
@@ -81,23 +110,41 @@ describe 'SocketIORemoteService', ->
       socketIORemoteClient.initialize ioClientInstance: socketIOClientStub
 
 
-    it 'should unsubscribe to the given event', ->
-      socketIORemoteClient.subscribe 'context/event/id', handler
-      socketIORemoteClient.unsubscribe 'context/event/id', handler
-      expect(socketIOClientStub.removeListener.calledWith 'context/event/id', handler).to.be.true
+    describe 'given only a context name', ->
+
+      it 'should unsubscribe from the given event', ->
+        socketIORemoteClient.subscribe 'context', handler
+        socketIORemoteClient.unsubscribe 'context', handler
+        expect(socketIOClientStub.removeListener.calledWith 'context', handler).to.be.true
+
+
+    describe 'given a context name and event name', ->
+
+      it 'should unsubscribe from the given event', ->
+        socketIORemoteClient.subscribe 'context', 'EventName', handler
+        socketIORemoteClient.unsubscribe 'context', 'EventName', handler
+        expect(socketIOClientStub.removeListener.calledWith 'context/EventName', handler).to.be.true
+
+
+    describe 'given a context name, event name and aggregate id', ->
+
+      it 'should unsubscribe from the given event', ->
+        socketIORemoteClient.subscribe 'context', 'EventName', '12345', handler
+        socketIORemoteClient.unsubscribe 'context', 'EventName', '12345', handler
+        expect(socketIOClientStub.removeListener.calledWith 'context/EventName/12345', handler).to.be.true
 
 
     describe 'given there are no more handlers for this event', ->
       it 'should leave the given channel', ->
-        socketIORemoteClient.subscribe 'context/event/id', handler
-        socketIORemoteClient.unsubscribe 'context/event/id', handler
-        expect(socketIOClientStub.emit.calledWith 'LeaveRoom', 'context/event/id').to.be.true
+        socketIORemoteClient.subscribe 'context', 'EventName', '12345', handler
+        socketIORemoteClient.unsubscribe 'context/EventName/12345', handler
+        expect(socketIOClientStub.emit.calledWith 'LeaveRoom', 'context/EventName/12345').to.be.true
 
 
     describe 'given there are still handlers for this event', ->
       it 'should not leave the given channel', ->
         anotherHandler = ->
-        socketIORemoteClient.subscribe 'context/event/id', handler
-        socketIORemoteClient.subscribe 'context/event/id', anotherHandler
-        socketIORemoteClient.unsubscribe 'context/event/id', handler
+        socketIORemoteClient.subscribe 'context', 'EventName', '12345', handler
+        socketIORemoteClient.subscribe 'context', 'EventName', '12345', anotherHandler
+        socketIORemoteClient.unsubscribe 'context/EventName/12345', handler
         expect(socketIOClientStub.emit.calledWith 'LeaveRoom').not.to.be.true

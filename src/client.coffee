@@ -56,19 +56,30 @@ class SocketIORemoteServiceClient
     S4() + S4() + delim + S4() + delim + S4() + delim + S4() + delim + S4() + S4() + S4()
 
 
-  subscribe: (eventName, handlerFn) ->
-    @_numberOfHandlers[eventName] ?= 0
-    @_numberOfHandlers[eventName] += 1
-    @_io_socket.emit 'JoinRoom', eventName
-    @_io_socket.on eventName, handlerFn
+  subscribe: (context, [domainEventName, aggregateId]..., handlerFn) ->
+    fullEventName = @_getFullEventName context, domainEventName, aggregateId
+    @_numberOfHandlers[fullEventName] ?= 0
+    @_numberOfHandlers[fullEventName] += 1
+    @_io_socket.emit 'JoinRoom', fullEventName
+    @_io_socket.on fullEventName, handlerFn
 
 
-  unsubscribe: (eventName, handlerFn) ->
-    @_numberOfHandlers[eventName] ?= 0
-    @_numberOfHandlers[eventName] -= 1
-    @_io_socket.removeListener eventName, handlerFn
-    if @_numberOfHandlers[eventName] <= 0
-      @_io_socket.emit 'LeaveRoom', eventName
+  unsubscribe: (context, [domainEventName, aggregateId]..., handlerFn) ->
+    fullEventName = @_getFullEventName context, domainEventName, aggregateId
+    @_numberOfHandlers[fullEventName] ?= 0
+    @_numberOfHandlers[fullEventName] -= 1
+    @_io_socket.removeListener fullEventName, handlerFn
+    if @_numberOfHandlers[fullEventName] <= 0
+      @_io_socket.emit 'LeaveRoom', fullEventName
+
+
+  _getFullEventName: (context, [domainEventName, aggregateId]) ->
+    fullEventName = context
+    if domainEventName
+      fullEventName += "/#{domainEventName}"
+    if aggregateId
+      fullEventName += "/#{aggregateId}"
+    fullEventName
 
 
 module.exports = new SocketIORemoteServiceClient
