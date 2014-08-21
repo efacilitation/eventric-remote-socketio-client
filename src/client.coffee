@@ -73,7 +73,7 @@ class SocketIORemoteServiceClient
       @_io_socket.emit 'LeaveRoom', fullEventName
 
 
-  _getFullEventName: (context, [domainEventName, aggregateId]) ->
+  _getFullEventName: (context, domainEventName, aggregateId) ->
     fullEventName = context
     if domainEventName
       fullEventName += "/#{domainEventName}"
