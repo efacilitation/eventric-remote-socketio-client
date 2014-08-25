@@ -1,7 +1,7 @@
 class SocketIORemoteServiceClient
 
   initialize: (options = {}, callback = ->) ->
-    @_numberOfHandlers = {}
+    @_subscribers = []
     @_callbacks = {}
 
     if options.ioClientInstance
@@ -56,21 +56,25 @@ class SocketIORemoteServiceClient
     S4() + S4() + delim + S4() + delim + S4() + delim + S4() + delim + S4() + S4() + S4()
 
 
-  subscribe: (context, [domainEventName, aggregateId]..., handlerFn) ->
+  subscribe: (context, [domainEventName, aggregateId]..., subscriberFn) ->
     fullEventName = @_getFullEventName context, domainEventName, aggregateId
-    @_numberOfHandlers[fullEventName] ?= 0
-    @_numberOfHandlers[fullEventName] += 1
+    subscriber =
+      eventName: fullEventName
+      subscriberFn: subscriberFn
+      subscriberId: @_generateUid()
     @_io_socket.emit 'JoinRoom', fullEventName
-    @_io_socket.on fullEventName, handlerFn
+    @_io_socket.on fullEventName, subscriberFn
+    @_subscribers.push subscriber
+    subscriber.subscriberId
 
 
-  unsubscribe: (context, [domainEventName, aggregateId]..., handlerFn) ->
-    fullEventName = @_getFullEventName context, domainEventName, aggregateId
-    @_numberOfHandlers[fullEventName] ?= 0
-    @_numberOfHandlers[fullEventName] -= 1
-    @_io_socket.removeListener fullEventName, handlerFn
-    if @_numberOfHandlers[fullEventName] <= 0
-      @_io_socket.emit 'LeaveRoom', fullEventName
+  unsubscribe: (subscriberId) ->
+    matchingSubscriber = @_subscribers.filter((x) -> x.subscriberId is subscriberId)[0]
+    @_subscribers = @_subscribers.filter (x) -> x isnt matchingSubscriber
+    @_io_socket.removeListener matchingSubscriber.eventName, matchingSubscriber.subscriberFn
+    othersHaveSubscribedToThisEvent = @_subscribers.some (x) -> x.eventName is matchingSubscriber.eventName
+    if not othersHaveSubscribedToThisEvent
+      @_io_socket.emit 'LeaveRoom', matchingSubscriber.eventName
 
 
   _getFullEventName: (context, domainEventName, aggregateId) ->
