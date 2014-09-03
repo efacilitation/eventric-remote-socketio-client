@@ -13,10 +13,10 @@
     "type": "git",
     "url": "https://github.com/efacilitation/eventric-remote-socketio-client.git"
   },
-  "main": "dist/client.js",
+  "main": "build/dist/eventric-remote-socketio-client.js",
   "scripts": {
     "test": "node_modules/.bin/gulp spec",
-    "prepublish": "node_modules/.bin/coffee -o dist -c src/client.coffee"
+    "prepublish": "node_modules/.bin/gulp build"
   },
   "dependencies": {
     "socket.io-client": "*"
@@ -29,6 +29,12 @@
     "gulp-util": "*",
     "gulp-mocha": "*",
     "gulp-watch": "*",
-    "sinon": "*"
+    "sinon": "*",
+    "gulp-coffee": "*",
+    "gulp-concat": "*",
+    "gulp-wrap-commonjs": "*",
+    "gulp-uglify": "*",
+    "rimraf": "*",
+    "run-sequence": "*"
   }
 }
