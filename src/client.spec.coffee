@@ -66,8 +66,8 @@ describe 'SocketIORemoteService', ->
     it 'should return an unique subscriber id', ->
       subscriberId1 = socketIORemoteClient.subscribe 'context', handler
       subscriberId2 = socketIORemoteClient.subscribe 'context', handler
-      expect(subscriberId1).to.be.a 'string'
-      expect(subscriberId2).to.be.a 'string'
+      expect(subscriberId1).to.be.a 'object'
+      expect(subscriberId2).to.be.a 'object'
       expect(subscriberId1).not.to.equal subscriberId2
 
 
@@ -119,21 +119,25 @@ describe 'SocketIORemoteService', ->
 
 
     it 'should unsubscribe from the given event', ->
-      subscriberId = socketIORemoteClient.subscribe 'context/EventName/12345', handler
-      socketIORemoteClient.unsubscribe subscriberId
-      expect(socketIOClientStub.removeListener.calledWith 'context/EventName/12345', handler).to.be.true
+      socketIORemoteClient.subscribe 'context/EventName/12345', handler
+      .then (subscriberId) ->
+        socketIORemoteClient.unsubscribe subscriberId
+        expect(socketIOClientStub.removeListener.calledWith 'context/EventName/12345', handler).to.be.true
 
 
     describe 'given there are no more handlers for this event', ->
       it 'should leave the given channel', ->
-        subscriberId1 = socketIORemoteClient.subscribe 'context', 'EventName', '12345', handler
-        socketIORemoteClient.unsubscribe subscriberId1
-        expect(socketIOClientStub.emit.calledWith 'LeaveRoom', 'context/EventName/12345').to.be.true
+        socketIORemoteClient.subscribe 'context', 'EventName', '12345', handler
+        .then (subscriberId1) ->
+          socketIORemoteClient.unsubscribe subscriberId1
+          expect(socketIOClientStub.emit.calledWith 'LeaveRoom', 'context/EventName/12345').to.be.true
 
 
     describe 'given there are still handlers for this event', ->
       it 'should not leave the given channel', ->
-        subscriberId1 = socketIORemoteClient.subscribe 'context', 'EventName', '12345', handler
-        subscriberId2 = socketIORemoteClient.subscribe 'context', 'EventName', '12345', handler
-        socketIORemoteClient.unsubscribe subscriberId2
-        expect(socketIOClientStub.emit.calledWith 'LeaveRoom').not.to.be.true
+        subscriberId1Promise = socketIORemoteClient.subscribe 'context', 'EventName', '12345', handler
+        subscriberId2Promise = socketIORemoteClient.subscribe 'context', 'EventName', '12345', handler
+        Promise.all [subscriberId1Promise, subscriberId2Promise]
+        .then (subscriberIds) ->
+          socketIORemoteClient.unsubscribe subscriberIds[1]
+          expect(socketIOClientStub.emit.calledWith 'LeaveRoom').not.to.be.true

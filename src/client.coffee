@@ -1,3 +1,6 @@
+require('es6-promise').polyfill()
+
+
 class SocketIORemoteServiceClient
 
   initialize: (options = {}, callback = ->) ->
@@ -57,24 +60,26 @@ class SocketIORemoteServiceClient
 
 
   subscribe: (context, [domainEventName, aggregateId]..., subscriberFn) ->
-    fullEventName = @_getFullEventName context, domainEventName, aggregateId
-    subscriber =
-      eventName: fullEventName
-      subscriberFn: subscriberFn
-      subscriberId: @_generateUid()
-    @_io_socket.emit 'JoinRoom', fullEventName
-    @_io_socket.on fullEventName, subscriberFn
-    @_subscribers.push subscriber
-    subscriber.subscriberId
+    new Promise (resolve, reject) =>
+      fullEventName = @_getFullEventName context, domainEventName, aggregateId
+      subscriber =
+        eventName: fullEventName
+        subscriberFn: subscriberFn
+        subscriberId: @_generateUid()
+      @_io_socket.emit 'JoinRoom', fullEventName
+      @_io_socket.on fullEventName, subscriberFn
+      @_subscribers.push subscriber
+      resolve subscriber.subscriberId
 
 
   unsubscribe: (subscriberId) ->
-    matchingSubscriber = @_subscribers.filter((x) -> x.subscriberId is subscriberId)[0]
-    @_subscribers = @_subscribers.filter (x) -> x isnt matchingSubscriber
-    @_io_socket.removeListener matchingSubscriber.eventName, matchingSubscriber.subscriberFn
-    othersHaveSubscribedToThisEvent = @_subscribers.some (x) -> x.eventName is matchingSubscriber.eventName
-    if not othersHaveSubscribedToThisEvent
-      @_io_socket.emit 'LeaveRoom', matchingSubscriber.eventName
+    new Promise (resolve, reject) =>
+      matchingSubscriber = @_subscribers.filter((x) -> x.subscriberId is subscriberId)[0]
+      @_subscribers = @_subscribers.filter (x) -> x isnt matchingSubscriber
+      @_io_socket.removeListener matchingSubscriber.eventName, matchingSubscriber.subscriberFn
+      othersHaveSubscribedToThisEvent = @_subscribers.some (x) -> x.eventName is matchingSubscriber.eventName
+      if not othersHaveSubscribedToThisEvent
+        @_io_socket.emit 'LeaveRoom', matchingSubscriber.eventName
 
 
   _getFullEventName: (context, domainEventName, aggregateId) ->

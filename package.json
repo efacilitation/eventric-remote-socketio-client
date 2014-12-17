@@ -19,7 +19,8 @@
     "prepublish": "node_modules/.bin/gulp build"
   },
   "dependencies": {
-    "socket.io-client": "*"
+    "socket.io-client": "*",
+    "es6-promise": "*"
   },
   "devDependencies": {
     "coffee-script": "*",
