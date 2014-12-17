@@ -21,3 +21,4 @@ gulp.task 'watch', ->
 
 require('./gulp/build')(gulp)
 require('./gulp/spec')(gulp)
+require('./gulp/bump')(gulp)
