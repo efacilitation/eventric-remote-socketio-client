@@ -88,4 +88,8 @@ class SocketIORemoteServiceClient
     fullEventName
 
 
+  disconnect: ->
+    @_io_socket.disconnect()
+
+
 module.exports = new SocketIORemoteServiceClient
