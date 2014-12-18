@@ -1,6 +1,7 @@
-chai   = require 'chai'
-expect = chai.expect
-sinon  = require 'sinon'
+chai     = require 'chai'
+expect   = chai.expect
+eventric = require 'eventric'
+sinon    = require 'sinon'
 
 describe 'SocketIORemoteService', ->
   socketIORemoteClient = null

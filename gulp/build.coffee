@@ -15,13 +15,13 @@ module.exports = (gulp) ->
   gulp.task 'build:src', ->
     gulp.src(['index.coffee', '+(src)/!(*.spec)*.coffee'])
       .pipe(coffee({bare: true}))
-      .pipe(gulp.dest('build/node'))
+      .pipe(gulp.dest('build/src'))
 
   gulp.task 'build:dist', ->
-    gulp.src('build/node/**/*.js')
+    gulp.src('build/src/**/*.js')
       .pipe(commonjs(
         pathModifier: (path) ->
-          path = path.replace "#{process.cwd()}/build/node", 'eventric-remote-socketio-client'
+          path = path.replace "#{process.cwd()}/build/src", 'eventric-remote-socketio-client'
           path = path.replace /.js$/, ''
           return path
         ))

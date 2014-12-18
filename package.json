@@ -19,8 +19,7 @@
     "prepublish": "node_modules/.bin/gulp build"
   },
   "dependencies": {
-    "socket.io-client": "*",
-    "es6-promise": "*"
+    "socket.io-client": "*"
   },
   "devDependencies": {
     "coffee-script": "*",
@@ -37,6 +36,7 @@
     "gulp-wrap-commonjs": "*",
     "gulp-uglify": "*",
     "rimraf": "*",
-    "run-sequence": "*"
+    "run-sequence": "*",
+    "eventric": "*"
   }
 }

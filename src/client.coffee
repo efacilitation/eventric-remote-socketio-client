@@ -1,6 +1,3 @@
-require('es6-promise').polyfill()
-
-
 class SocketIORemoteServiceClient
 
   initialize: (options = {}, callback = ->) ->
