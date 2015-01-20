@@ -3,7 +3,7 @@ expect   = chai.expect
 eventric = require 'eventric'
 sinon    = require 'sinon'
 
-describe 'SocketIORemoteService', ->
+describe 'Remote SocketIO Client', ->
   socketIORemoteClient = null
   sandbox = null
   socketIOClientStub = null
@@ -31,30 +31,30 @@ describe 'SocketIORemoteService', ->
 
 
   describe '#rpc', ->
-    it 'should emit the given payload as rpc request over socket.io-client', ->
+    beforeEach ->
+      sandbox.stub(global, 'setTimeout').yields()
       socketIORemoteClient.initialize ioClientInstance: socketIOClientStub
+
+
+    it 'should emit the given payload as rpc request over socket.io-client', ->
       rpcPayload =
         some: 'payload'
       socketIORemoteClient.rpc rpcPayload, ->
       expect(socketIOClientStub.emit.calledWith 'RPC_Request', rpcPayload).to.be.true
 
 
-    it 'should execute the given callback upon an RPC_Response with the correct rpc id', ->
-      sandbox.stub(global, 'setTimeout').yields()
-      socketIORemoteClient.initialize ioClientInstance: socketIOClientStub
-
-      callback = sandbox.spy()
+    it 'should resolve the promise upon an RPC_Response with the correct rpc id', (done) ->
       payload = {}
-      socketIORemoteClient.rpc payload, callback
+      socketIORemoteClient.rpc payload
+      .then ->
+        done()
 
       responseStub =
         rpcId: payload.rpcId
-        err: null
         data: {}
 
       rpcResponseHandler = socketIOClientStub.on.firstCall.args[1]
       rpcResponseHandler responseStub
-      expect(callback.calledWith responseStub.err, responseStub.data).to.be.true
 
 
   describe '#subscribe', ->

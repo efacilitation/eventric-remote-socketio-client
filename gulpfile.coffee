@@ -1,4 +1,5 @@
 gulp = require 'gulp'
+runSequence = require 'run-sequence'
 
 gulp.on 'err', (e) ->
 gulp.on 'task_err', (e) ->
@@ -9,9 +10,9 @@ gulp.on 'task_err', (e) ->
 gulp.task 'watch', ->
   gulp.watch [
     'src/*.coffee'
-  ], [
-    'spec'
-  ]
+  ], ->
+   runSequence 'build', 'spec'
+
 
 require('./gulp/build')(gulp)
 require('./gulp/spec')(gulp)
