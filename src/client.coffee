@@ -70,12 +70,17 @@ class SocketIORemoteServiceClient
 
   unsubscribe: (subscriberId) ->
     new Promise (resolve, reject) =>
-      matchingSubscriber = @_subscribers.filter((x) -> x.subscriberId is subscriberId)[0]
-      @_subscribers = @_subscribers.filter (x) -> x isnt matchingSubscriber
+      matchingSubscriber = @_subscribers.filter((x) ->
+        x.subscriberId is subscriberId
+      )[0]
+      @_subscribers = @_subscribers.filter (x) ->
+        x isnt matchingSubscriber
       @_io_socket.removeListener matchingSubscriber.eventName, matchingSubscriber.subscriberFn
-      othersHaveSubscribedToThisEvent = @_subscribers.some (x) -> x.eventName is matchingSubscriber.eventName
+      othersHaveSubscribedToThisEvent = @_subscribers.some (x) ->
+        x.eventName is matchingSubscriber.eventName
       if not othersHaveSubscribedToThisEvent
         @_io_socket.emit 'LeaveRoom', matchingSubscriber.eventName
+      resolve()
 
 
   _getFullEventName: (context, domainEventName, aggregateId) ->
