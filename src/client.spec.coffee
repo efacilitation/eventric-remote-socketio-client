@@ -1,3 +1,5 @@
+require('es6-promise').polyfill()
+
 chai     = require 'chai'
 expect   = chai.expect
 eventric = require 'eventric'

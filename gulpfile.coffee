@@ -1,19 +1,18 @@
 gulp = require 'gulp'
 runSequence = require 'run-sequence'
 
-gulp.on 'err', (e) ->
-gulp.on 'task_err', (e) ->
+gulp.on 'err', (error) ->
+gulp.on 'task_err', (error) ->
   if process.env.CI
-    gutil.log e
+    gutil.log error
     process.exit 1
 
 gulp.task 'watch', ->
   gulp.watch [
     'src/*.coffee'
   ], ->
-   runSequence 'build', 'spec'
+   runSequence 'build', 'specs'
 
 
 require('./gulp/build')(gulp)
-require('./gulp/spec')(gulp)
-require('./gulp/bump')(gulp)
+require('./gulp/specs')(gulp)
