@@ -7,16 +7,11 @@ class SocketIORemoteServiceClient
     @_initializeSocketIo options
 
 
-  _initializeSocketIo: (options) ->  new Promise (resolve, reject) =>
-    if options.ioClientInstance
-      @_io_socket = options.ioClientInstance
+  _initializeSocketIo: ({ioClientInstance}) ->
+    new Promise (resolve, reject) =>
+      @_io_socket = ioClientInstance
       @_initializeRPCResponseListener()
       resolve()
-    else
-      @_io_socket = require('socket.io-client')('http://localhost:3000')
-      @_io_socket.on 'connect', =>
-        @_initializeRPCResponseListener()
-        resolve()
 
 
   _initializeRPCResponseListener: ->
@@ -26,13 +21,14 @@ class SocketIORemoteServiceClient
       , 0
 
 
-  rpc: (payload) ->  new Promise (resolve, reject) =>
-    rpcId = @_generateUid()
-    payload.rpcId = rpcId
-    @_promises[rpcId] =
-      resolve: resolve
-      reject: reject
-    @_io_socket.emit 'RPC_Request', payload
+  rpc: (payload) ->
+    new Promise (resolve, reject) =>
+      rpcId = @_generateUid()
+      payload.rpcId = rpcId
+      @_promises[rpcId] =
+        resolve: resolve
+        reject: reject
+      @_io_socket.emit 'RPC_Request', payload
 
 
   _handleRpcResponse: (response) ->
