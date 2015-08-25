@@ -56,7 +56,7 @@ class SocketIORemoteServiceClient
         eventName: fullEventName
         subscriberFn: subscriberFn
         subscriberId: @_getNextSubscriberId()
-      @_io_socket.emit 'JoinRoom', fullEventName
+      @_io_socket.emit 'eventric:joinRoom', fullEventName
       @_io_socket.on fullEventName, subscriberFn
       @_subscribers.push subscriber
       resolve subscriber.subscriberId
@@ -73,7 +73,7 @@ class SocketIORemoteServiceClient
       othersHaveSubscribedToThisEvent = @_subscribers.some (x) ->
         x.eventName is matchingSubscriber.eventName
       if not othersHaveSubscribedToThisEvent
-        @_io_socket.emit 'LeaveRoom', matchingSubscriber.eventName
+        @_io_socket.emit 'eventric:leaveRoom', matchingSubscriber.eventName
       resolve()
 
 

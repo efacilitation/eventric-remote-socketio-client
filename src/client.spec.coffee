@@ -80,7 +80,7 @@ describe 'Remote SocketIO Client', ->
 
 
       it 'should join the correct channel', ->
-        expect(socketIOClientStub.emit.calledWith 'JoinRoom', 'context').to.be.true
+        expect(socketIOClientStub.emit.calledWith 'eventric:joinRoom', 'context').to.be.true
 
 
       it 'should subscribe to the correct event', ->
@@ -93,7 +93,7 @@ describe 'Remote SocketIO Client', ->
 
 
       it 'should join the correct channel', ->
-        expect(socketIOClientStub.emit.calledWith 'JoinRoom', 'context/EventName').to.be.true
+        expect(socketIOClientStub.emit.calledWith 'eventric:joinRoom', 'context/EventName').to.be.true
 
 
       it 'should subscribe to the correct event', ->
@@ -106,7 +106,7 @@ describe 'Remote SocketIO Client', ->
 
 
       it 'should join the correct channel', ->
-        expect(socketIOClientStub.emit.calledWith 'JoinRoom', 'context/EventName/12345').to.be.true
+        expect(socketIOClientStub.emit.calledWith 'eventric:joinRoom', 'context/EventName/12345').to.be.true
 
 
       it 'should subscribe to the correct event', ->
@@ -133,7 +133,7 @@ describe 'Remote SocketIO Client', ->
         socketIORemoteClient.subscribe 'context', 'EventName', '12345', handler
         .then (subscriberId1) ->
           socketIORemoteClient.unsubscribe subscriberId1
-          expect(socketIOClientStub.emit.calledWith 'LeaveRoom', 'context/EventName/12345').to.be.true
+          expect(socketIOClientStub.emit.calledWith 'eventric:leaveRoom', 'context/EventName/12345').to.be.true
 
 
     describe 'given there are still handlers for this event', ->
@@ -143,4 +143,4 @@ describe 'Remote SocketIO Client', ->
         Promise.all [subscriberId1Promise, subscriberId2Promise]
         .then (subscriberIds) ->
           socketIORemoteClient.unsubscribe subscriberIds[1]
-          expect(socketIOClientStub.emit.calledWith 'LeaveRoom').not.to.be.true
+          expect(socketIOClientStub.emit.calledWith 'eventric:leaveRoom').not.to.be.true
