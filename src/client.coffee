@@ -15,7 +15,7 @@ class SocketIORemoteServiceClient
 
 
   _initializeRPCResponseListener: ->
-    @_io_socket.on 'RPC_Response', (response) =>
+    @_io_socket.on 'eventric:rpcResponse', (response) =>
       setTimeout =>
         @_handleRpcResponse response
       , 0
@@ -28,7 +28,7 @@ class SocketIORemoteServiceClient
       @_promises[rpcId] =
         resolve: resolve
         reject: reject
-      @_io_socket.emit 'RPC_Request', payload
+      @_io_socket.emit 'eventric:rpcRequest', payload
 
 
   _handleRpcResponse: (response) ->

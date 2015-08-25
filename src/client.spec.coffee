@@ -24,11 +24,11 @@ describe 'Remote SocketIO Client', ->
 
 
   describe '#initialize', ->
-    it 'should register a callback for RPC_Response which makes use of setTimeout', ->
+    it 'should register a callback for eventric:rpcResponse which makes use of setTimeout', ->
       socketIOClientStub.on.yields()
       sandbox.stub(global, 'setTimeout')
       socketIORemoteClient.initialize ioClientInstance: socketIOClientStub
-      expect(socketIOClientStub.on.calledWith 'RPC_Response', sinon.match.func).to.be.true
+      expect(socketIOClientStub.on.calledWith 'eventric:rpcResponse', sinon.match.func).to.be.true
       expect(global.setTimeout.calledOnce).to.be.true
 
 
@@ -42,10 +42,10 @@ describe 'Remote SocketIO Client', ->
       rpcPayload =
         some: 'payload'
       socketIORemoteClient.rpc rpcPayload, ->
-      expect(socketIOClientStub.emit.calledWith 'RPC_Request', rpcPayload).to.be.true
+      expect(socketIOClientStub.emit.calledWith 'eventric:rpcRequest', rpcPayload).to.be.true
 
 
-    it 'should resolve the promise upon an RPC_Response with the correct rpc id', (done) ->
+    it 'should resolve the promise upon a rpc response with the correct rpc id', (done) ->
       payload = {}
       socketIORemoteClient.rpc payload
       .then ->
