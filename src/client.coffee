@@ -1,6 +1,8 @@
 class SocketIORemoteServiceClient
 
   initialize: (options = {}) ->
+    @_subscriberId = 0
+    @_rpcId = 0
     @_subscribers = []
     @_promises = {}
 
@@ -23,7 +25,7 @@ class SocketIORemoteServiceClient
 
   rpc: (payload) ->
     new Promise (resolve, reject) =>
-      rpcId = @_generateUid()
+      rpcId = @_getNextRpcId()
       payload.rpcId = rpcId
       @_promises[rpcId] =
         resolve: resolve
@@ -31,8 +33,12 @@ class SocketIORemoteServiceClient
       @_io_socket.emit 'eventric:rpcRequest', payload
 
 
+  _getNextRpcId: ->
+    @_rpcId++
+
+
   _handleRpcResponse: (response) ->
-    if not response.rpcId
+    if not response.rpcId?
       throw new Error 'Missing rpcId in RPC Response'
     if response.rpcId not of @_promises
       throw new Error "No promise registered for id #{response.rpcId}"
@@ -43,21 +49,13 @@ class SocketIORemoteServiceClient
     delete @_promises[response.rpcId]
 
 
-  _generateUid: (separator) ->
-    # http://stackoverflow.com/a/12223573
-    S4 = ->
-      (((1 + Math.random()) * 0x10000) | 0).toString(16).substring 1
-    delim = separator or "-"
-    S4() + S4() + delim + S4() + delim + S4() + delim + S4() + delim + S4() + S4() + S4()
-
-
   subscribe: (context, [domainEventName, aggregateId]..., subscriberFn) ->
     new Promise (resolve, reject) =>
       fullEventName = @_getFullEventName context, domainEventName, aggregateId
       subscriber =
         eventName: fullEventName
         subscriberFn: subscriberFn
-        subscriberId: @_generateUid()
+        subscriberId: @_getNextSubscriberId()
       @_io_socket.emit 'JoinRoom', fullEventName
       @_io_socket.on fullEventName, subscriberFn
       @_subscribers.push subscriber
@@ -77,6 +75,10 @@ class SocketIORemoteServiceClient
       if not othersHaveSubscribedToThisEvent
         @_io_socket.emit 'LeaveRoom', matchingSubscriber.eventName
       resolve()
+
+
+  _getNextSubscriberId: ->
+    @_subscriberId++
 
 
   _getFullEventName: (context, domainEventName, aggregateId) ->
