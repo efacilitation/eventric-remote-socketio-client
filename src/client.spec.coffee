@@ -63,6 +63,22 @@ describe 'Remote SocketIO Client', ->
       rpcResponseHandler responseStub
 
 
+    it 'should reject the promise and convert error objects to error instances given an error object in the rpc response', (done) ->
+      payload = {}
+      socketIORemoteClient.rpc payload
+      .catch (error) ->
+        expect(error instanceof Error).to.be.true
+        expect(error.message).to.contain 'The error message'
+        done()
+
+      responseStub =
+        rpcId: payload.rpcId
+        error: message: 'The error message'
+
+      rpcResponseHandler = socketIOClientStub.on.firstCall.args[1]
+      rpcResponseHandler responseStub
+
+
     it 'should resolve the promise upon a rpc response with the correct rpc id', (done) ->
       payload = {}
       socketIORemoteClient.rpc payload

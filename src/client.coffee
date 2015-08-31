@@ -43,6 +43,8 @@ class SocketIORemoteServiceClient
     if response.rpcId not of @_promises
       throw new Error "No promise registered for id #{response.rpcId}"
     if response.error
+      if response.error.constructor isnt Error
+        response.error = new Error response.error.message
       @_promises[response.rpcId].reject response.error
     else
       @_promises[response.rpcId].resolve response.data
