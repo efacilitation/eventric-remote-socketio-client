@@ -42,8 +42,8 @@ class SocketIORemoteServiceClient
       throw new Error 'Missing rpcId in RPC Response'
     if response.rpcId not of @_promises
       throw new Error "No promise registered for id #{response.rpcId}"
-    if response.err
-      @_promises[response.rpcId].reject response.err
+    if response.error
+      @_promises[response.rpcId].reject response.error
     else
       @_promises[response.rpcId].resolve response.data
     delete @_promises[response.rpcId]

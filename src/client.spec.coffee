@@ -24,15 +24,17 @@ describe 'Remote SocketIO Client', ->
 
 
   describe '#initialize', ->
+
     it 'should register a callback for eventric:rpcResponse which makes use of setTimeout', ->
       socketIOClientStub.on.yields()
-      sandbox.stub(global, 'setTimeout')
+      sandbox.stub global, 'setTimeout'
       socketIORemoteClient.initialize ioClientInstance: socketIOClientStub
       expect(socketIOClientStub.on.calledWith 'eventric:rpcResponse', sinon.match.func).to.be.true
       expect(global.setTimeout.calledOnce).to.be.true
 
 
   describe '#rpc', ->
+
     beforeEach ->
       sandbox.stub(global, 'setTimeout').yields()
       socketIORemoteClient.initialize ioClientInstance: socketIOClientStub
@@ -43,6 +45,22 @@ describe 'Remote SocketIO Client', ->
         some: 'payload'
       socketIORemoteClient.rpc rpcPayload, ->
       expect(socketIOClientStub.emit.calledWith 'eventric:rpcRequest', rpcPayload).to.be.true
+
+
+    it 'should reject the promise given an error instance in the rpc response', (done) ->
+      payload = {}
+      socketIORemoteClient.rpc payload
+      .catch (error) ->
+        expect(error instanceof Error).to.be.true
+        expect(error.message).to.contain 'The error message'
+        done()
+
+      responseStub =
+        rpcId: payload.rpcId
+        error: new Error 'The error message'
+
+      rpcResponseHandler = socketIOClientStub.on.firstCall.args[1]
+      rpcResponseHandler responseStub
 
 
     it 'should resolve the promise upon a rpc response with the correct rpc id', (done) ->
@@ -75,6 +93,7 @@ describe 'Remote SocketIO Client', ->
 
 
     describe 'given only a context name', ->
+
       beforeEach ->
         socketIORemoteClient.subscribe 'context', handler
 
@@ -88,6 +107,7 @@ describe 'Remote SocketIO Client', ->
 
 
     describe 'given a context name and event name', ->
+
       beforeEach ->
         socketIORemoteClient.subscribe 'context', 'EventName', handler
 
@@ -101,6 +121,7 @@ describe 'Remote SocketIO Client', ->
 
 
     describe 'given a context name, event name and aggregate id', ->
+
       beforeEach ->
         socketIORemoteClient.subscribe 'context', 'EventName', '12345', handler
 
@@ -129,6 +150,7 @@ describe 'Remote SocketIO Client', ->
 
 
     describe 'given there are no more handlers for this event', ->
+
       it 'should leave the given channel', ->
         socketIORemoteClient.subscribe 'context', 'EventName', '12345', handler
         .then (subscriberId1) ->
@@ -137,6 +159,7 @@ describe 'Remote SocketIO Client', ->
 
 
     describe 'given there are still handlers for this event', ->
+
       it 'should not leave the given channel', ->
         subscriberId1Promise = socketIORemoteClient.subscribe 'context', 'EventName', '12345', handler
         subscriberId2Promise = socketIORemoteClient.subscribe 'context', 'EventName', '12345', handler
