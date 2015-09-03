@@ -10,7 +10,7 @@ class SocketIORemoteServiceClient
 
 
   _initializeSocketIo: ({ioClientInstance}) ->
-    new Promise (resolve, reject) =>
+    new Promise (resolve) =>
       @_io_socket = ioClientInstance
       @_initializeRPCResponseListener()
       resolve()
@@ -20,7 +20,6 @@ class SocketIORemoteServiceClient
     @_io_socket.on 'eventric:rpcResponse', (response) =>
       setTimeout =>
         @_handleRpcResponse response
-      , 0
 
 
   rpc: (payload) ->
@@ -44,7 +43,9 @@ class SocketIORemoteServiceClient
       throw new Error "No promise registered for id #{response.rpcId}"
     if response.error
       if response.error.constructor isnt Error
-        response.error = new Error response.error.message
+        errorInstance = new Error response.error.message
+        errorInstance.name = response.error.name
+        response.error = errorInstance
       @_promises[response.rpcId].reject response.error
     else
       @_promises[response.rpcId].resolve response.data
@@ -66,14 +67,13 @@ class SocketIORemoteServiceClient
 
   unsubscribe: (subscriberId) ->
     new Promise (resolve, reject) =>
-      matchingSubscriber = @_subscribers.filter((x) ->
-        x.subscriberId is subscriberId
+      matchingSubscriber = @_subscribers.filter((subscriber) ->
+        subscriber.subscriberId is subscriberId
       )[0]
-      @_subscribers = @_subscribers.filter (x) ->
-        x isnt matchingSubscriber
+      @_subscribers = @_subscribers.filter (subscriber) -> subscriber isnt matchingSubscriber
       @_io_socket.removeListener matchingSubscriber.eventName, matchingSubscriber.subscriberFn
-      othersHaveSubscribedToThisEvent = @_subscribers.some (x) ->
-        x.eventName is matchingSubscriber.eventName
+      othersHaveSubscribedToThisEvent = @_subscribers.some (subscriber) ->
+        subscriber.eventName is matchingSubscriber.eventName
       if not othersHaveSubscribedToThisEvent
         @_io_socket.emit 'eventric:leaveRoom', matchingSubscriber.eventName
       resolve()

@@ -40,19 +40,33 @@ describe 'Remote SocketIO Client', ->
       socketIORemoteClient.initialize ioClientInstance: socketIOClientStub
 
 
-    it 'should emit the given payload as rpc request over socket.io-client', ->
+    it 'should emit an eventric:rpcRequest event with the given payload', ->
       rpcPayload =
         some: 'payload'
-      socketIORemoteClient.rpc rpcPayload, ->
+      socketIORemoteClient.rpc rpcPayload
       expect(socketIOClientStub.emit.calledWith 'eventric:rpcRequest', rpcPayload).to.be.true
 
 
-    it 'should reject the promise given an error instance in the rpc response', (done) ->
+    it 'should resolve with the correct response data given a rpc response', (done) ->
+      payload = {}
+      socketIORemoteClient.rpc payload
+      .then (responseData) ->
+        expect(responseData).to.equal responseStub.data
+        done()
+
+      responseStub =
+        rpcId: payload.rpcId
+        data: {}
+
+      rpcResponseHandler = socketIOClientStub.on.firstCall.args[1]
+      rpcResponseHandler responseStub
+
+
+    it 'should reject with an error given a rpc response with an error in the rpc response', ->
       payload = {}
       socketIORemoteClient.rpc payload
       .catch (error) ->
-        expect(error instanceof Error).to.be.true
-        expect(error.message).to.contain 'The error message'
+        expect(error).to.be responseStub.error
         done()
 
       responseStub =
@@ -63,31 +77,20 @@ describe 'Remote SocketIO Client', ->
       rpcResponseHandler responseStub
 
 
-    it 'should reject the promise and convert error objects to error instances given an error object in the rpc response', (done) ->
+    it 'should reject with an error instance upon a rpc response with an error like object in the response', (done) ->
       payload = {}
       socketIORemoteClient.rpc payload
       .catch (error) ->
         expect(error instanceof Error).to.be.true
-        expect(error.message).to.contain 'The error message'
+        expect(error.name).to.equal 'SomeError'
+        expect(error.message).to.equal 'The error message'
         done()
 
       responseStub =
         rpcId: payload.rpcId
-        error: message: 'The error message'
-
-      rpcResponseHandler = socketIOClientStub.on.firstCall.args[1]
-      rpcResponseHandler responseStub
-
-
-    it 'should resolve the promise upon a rpc response with the correct rpc id', (done) ->
-      payload = {}
-      socketIORemoteClient.rpc payload
-      .then ->
-        done()
-
-      responseStub =
-        rpcId: payload.rpcId
-        data: {}
+        error:
+          name: 'SomeError'
+          message: 'The error message'
 
       rpcResponseHandler = socketIOClientStub.on.firstCall.args[1]
       rpcResponseHandler responseStub
