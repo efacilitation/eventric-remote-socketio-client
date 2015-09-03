@@ -43,13 +43,18 @@ class SocketIORemoteServiceClient
       throw new Error "No promise registered for id #{response.rpcId}"
     if response.error
       if response.error.constructor isnt Error
-        errorInstance = new Error response.error.message
-        errorInstance.name = response.error.name
-        response.error = errorInstance
+        response.error = @_convertObjectToError response.error
       @_promises[response.rpcId].reject response.error
     else
       @_promises[response.rpcId].resolve response.data
     delete @_promises[response.rpcId]
+
+
+  _convertObjectToError: (object) ->
+    error = new Error object.message
+    Object.keys(object).forEach (key) ->
+      error[key] = object[key]
+    return error
 
 
   subscribe: (context, [domainEventName, aggregateId]..., subscriberFn) ->

@@ -62,7 +62,7 @@ describe 'Remote SocketIO Client', ->
       rpcResponseHandler responseStub
 
 
-    it 'should reject with an error given a rpc response with an error in the rpc response', ->
+    it 'should reject with an error given a rpc response with an error', ->
       payload = {}
       socketIORemoteClient.rpc payload
       .catch (error) ->
@@ -77,7 +77,7 @@ describe 'Remote SocketIO Client', ->
       rpcResponseHandler responseStub
 
 
-    it 'should reject with an error instance upon a rpc response with an error like object in the response', (done) ->
+    it 'should reject with an error given a rpc response with an error like object', (done) ->
       payload = {}
       socketIORemoteClient.rpc payload
       .catch (error) ->
@@ -91,6 +91,25 @@ describe 'Remote SocketIO Client', ->
         error:
           name: 'SomeError'
           message: 'The error message'
+
+      rpcResponseHandler = socketIOClientStub.on.firstCall.args[1]
+      rpcResponseHandler responseStub
+
+
+    it 'should preserve all custom properties given a rpc response with an error like object with custom properties', (done) ->
+      payload = {}
+      socketIORemoteClient.rpc payload
+      .catch (error) ->
+        expect(error instanceof Error).to.be.true
+        expect(error.customProperty).to.equal 'customValue'
+        done()
+
+      responseStub =
+        rpcId: payload.rpcId
+        error:
+          name: 'SomeError'
+          message: 'The error message'
+          customProperty: 'customValue'
 
       rpcResponseHandler = socketIOClientStub.on.firstCall.args[1]
       rpcResponseHandler responseStub
