@@ -1,7 +1,7 @@
 language: node_js
 node_js:
-- '0.10'
+- '5.6'
 notifications:
   hipchat:
     rooms:
-      secure: CJ4Tq9wk4OGl4lCvMJ6H7qUQQuiSRD7KfEIlR36LHFgxqX+x8i/ISW+fvB45syD2w+AfE7D8ARzvaryYEY0BgEgSt3iWZqNUH73U3DDU8kh0ClnzR7e/LXLQEM92A23jEjVxhempHcLIxiU9L8NRELyWzeRFo9YznYkg2LPkMFE=
+      secure: OK7MU1O8ccG5Ns2ByoOwK70luq262Yje6bdHWLlOHuUGMoKnxDY1iYTl6EVW7+Sdw+5ldyI8Z30QvwV5t38kZBvlkTVnOd3W9S9MXdjF32ZQpTlEzXYnL450foEdrqTyQG9XO6r9SCMQRryz7+gjO1TdJv1JdwmbBVOeYknrl1g=
