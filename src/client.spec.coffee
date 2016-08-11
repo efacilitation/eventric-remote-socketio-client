@@ -2,7 +2,6 @@ require('es6-promise').polyfill()
 
 chai     = require 'chai'
 expect   = chai.expect
-eventric = require 'eventric'
 sinon    = require 'sinon'
 
 describe 'Remote SocketIO Client', ->
@@ -123,11 +122,13 @@ describe 'Remote SocketIO Client', ->
       socketIORemoteClient.initialize ioClientInstance: socketIOClientStub
 
     it 'should return an unique subscriber id', ->
-      subscriberId1 = socketIORemoteClient.subscribe 'context', handler
-      subscriberId2 = socketIORemoteClient.subscribe 'context', handler
-      expect(subscriberId1).to.be.a 'object'
-      expect(subscriberId2).to.be.a 'object'
-      expect(subscriberId1).not.to.equal subscriberId2
+      socketIORemoteClient.subscribe 'context', handler
+      .then (subscriberId1) ->
+        expect(subscriberId1).to.be.a 'number'
+        socketIORemoteClient.subscribe 'context', handler
+        .then (subscriberId2) ->
+          expect(subscriberId2).to.be.a 'number'
+          expect(subscriberId1).not.to.equal subscriberId2
 
 
     describe 'given only a context name', ->
